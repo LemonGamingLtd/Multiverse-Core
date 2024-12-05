@@ -106,6 +106,8 @@ import com.onarandombox.MultiverseCore.utils.WorldManager;
 import com.pneumaticraft.commandhandler.CommandHandler;
 import me.main__.util.SerializationConfig.NoSuchPropertyException;
 import me.main__.util.SerializationConfig.SerializationConfig;
+import me.nahu.scheduler.wrapper.WrappedScheduler;
+import me.nahu.scheduler.wrapper.WrappedSchedulerBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
@@ -237,10 +239,13 @@ public class MultiverseCore extends JavaPlugin implements MVPlugin, Core {
     private SafeTTeleporter safeTTeleporter;
     private UnsafeCallWrapper unsafeCallWrapper;
 
+    private WrappedScheduler scheduler;
+
     private File serverFolder = new File(System.getProperty("user.dir"));
 
     @Override
     public void onLoad() {
+        this.scheduler = WrappedSchedulerBuilder.builder().plugin(this).build();
         // Register our config
         SerializationConfig.registerAll(MultiverseCoreConfiguration.class);
         // Register our world
@@ -277,6 +282,8 @@ public class MultiverseCore extends JavaPlugin implements MVPlugin, Core {
      */
     @Override
     public void onEnable() {
+        Logging.info("Successfully initialized scheduler of type: " + getScheduler().getImplementationType());
+
         getServer().getPluginManager().registerEvents(new MVWorldInitListener(this), this);
 
         this.messaging = new MVMessaging();
@@ -1234,5 +1241,9 @@ public class MultiverseCore extends JavaPlugin implements MVPlugin, Core {
 
     public UnsafeCallWrapper getUnsafeCallWrapper() {
         return this.unsafeCallWrapper;
+    }
+
+    public WrappedScheduler getScheduler() {
+        return this.scheduler;
     }
 }

@@ -18,13 +18,13 @@ import com.onarandombox.MultiverseCore.utils.webpaste.URLShortener;
 import com.onarandombox.MultiverseCore.utils.webpaste.URLShortenerFactory;
 import com.onarandombox.MultiverseCore.utils.webpaste.URLShortenerType;
 import com.pneumaticraft.commandhandler.CommandHandler;
+import me.nahu.scheduler.wrapper.runnable.WrappedRunnable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.List;
@@ -155,7 +155,7 @@ public class VersionCommand extends MultiverseCommand {
             }
         }
 
-        BukkitRunnable logPoster = new BukkitRunnable() {
+        WrappedRunnable logPoster = new WrappedRunnable() {
             @Override
             public void run() {
                 if (args.size() > 0) {
@@ -185,7 +185,7 @@ public class VersionCommand extends MultiverseCommand {
         };
 
         // Run the log posting operation asynchronously, since we don't know how long it will take.
-        logPoster.runTaskAsynchronously(this.plugin);
+        logPoster.runTaskAsynchronously(this.plugin.getScheduler());
     }
 
     /**

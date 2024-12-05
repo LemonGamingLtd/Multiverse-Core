@@ -13,6 +13,7 @@ import com.onarandombox.MultiverseCore.api.MVDestination;
 import com.onarandombox.MultiverseCore.api.SafeTTeleporter;
 import com.onarandombox.MultiverseCore.destination.InvalidDestination;
 import com.onarandombox.MultiverseCore.enums.TeleportResult;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -212,16 +213,14 @@ public class SimpleSafeTTeleporter implements SafeTTeleporter {
         }
 
         if (safeLoc != null) {
-            if (teleportee.teleport(safeLoc)) {
-                Vector v = d.getVelocity();
-                if (v != null && !DEFAULT_VECTOR.equals(v)) {
-                    Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
-                        teleportee.setVelocity(d.getVelocity());
-                    }, 1);
-                }
-                return TeleportResult.SUCCESS;
+            PaperLib.teleportAsync(teleportee, safeLoc);
+            Vector v = d.getVelocity();
+            if (v != null && !DEFAULT_VECTOR.equals(v)) {
+                this.plugin.getScheduler().runTaskLaterAtEntity(teleportee, () -> {
+                    teleportee.setVelocity(d.getVelocity());
+                }, 1);
             }
-            return TeleportResult.FAIL_OTHER;
+            return TeleportResult.SUCCESS;
         }
         return TeleportResult.FAIL_UNSAFE;
     }
@@ -236,10 +235,8 @@ public class SimpleSafeTTeleporter implements SafeTTeleporter {
         }
 
         if (location != null) {
-            if (teleportee.teleport(location)) {
-                return TeleportResult.SUCCESS;
-            }
-            return TeleportResult.FAIL_OTHER;
+            PaperLib.teleportAsync(teleportee, location);
+            return TeleportResult.SUCCESS;
         }
         return TeleportResult.FAIL_UNSAFE;
     }

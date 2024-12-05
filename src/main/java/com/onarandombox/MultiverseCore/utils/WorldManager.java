@@ -481,23 +481,23 @@ public class WorldManager implements MVWorldManager {
         }
 
         WorldProperties mvworld = worldsFromTheConfig.get(worldName);
-        World cbworld;
-        try {
-            cbworld = creator.createWorld();
-        } catch (Exception e) {
-            e.printStackTrace();
-            brokenWorld(worldName);
-            return false;
-        }
-        if (cbworld == null) {
-            nullWorld(worldName);
-            return false;
-        }
-        MVWorld world = new MVWorld(plugin, cbworld, mvworld);
-        if (MultiverseCoreConfiguration.getInstance().isAutoPurgeEnabled()) {
-            this.worldPurger.purgeWorld(world);
-        }
-        this.worlds.put(worldName, world);
+        this.plugin.getScheduler().runTask(() -> {
+            World cbworld = null;
+            try {
+                cbworld = creator.createWorld();
+            } catch (Exception e) {
+                e.printStackTrace();
+                brokenWorld(worldName);
+            }
+            if (cbworld == null) {
+                nullWorld(worldName);
+            }
+            MVWorld world = new MVWorld(plugin, cbworld, mvworld);
+            if (MultiverseCoreConfiguration.getInstance().isAutoPurgeEnabled()) {
+                this.worldPurger.purgeWorld(world);
+            }
+            this.worlds.put(worldName, world);
+        });
         return true;
     }
 

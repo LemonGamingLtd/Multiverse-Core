@@ -7,8 +7,8 @@
 
 package com.onarandombox.MultiverseCore.commandtools.queue;
 
+import me.nahu.scheduler.wrapper.task.WrappedTask;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -24,7 +24,7 @@ public class QueuedCommand {
     private final Runnable action;
     private final String prompt;
     private final int validDuration;
-    private BukkitTask expireTask;
+    private WrappedTask expireTask;
 
     public QueuedCommand(CommandSender sender, Runnable action) {
         this(sender, action, DEFAULT_PROMPT_MESSAGE, DEFAULT_VALID_TIME);
@@ -73,11 +73,11 @@ public class QueuedCommand {
     }
 
     @NotNull
-    BukkitTask getExpireTask() {
+    WrappedTask getExpireTask() {
         return expireTask;
     }
 
-    void setExpireTask(@NotNull BukkitTask expireTask) {
+    void setExpireTask(@NotNull WrappedTask expireTask) {
         if (this.expireTask != null) {
             throw new IllegalStateException("This queue command already has an expire task. You can't register twice!");
         }

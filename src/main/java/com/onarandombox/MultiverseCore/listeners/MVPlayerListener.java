@@ -15,6 +15,7 @@ import com.onarandombox.MultiverseCore.enums.RespawnType;
 import com.onarandombox.MultiverseCore.event.MVRespawnEvent;
 import com.onarandombox.MultiverseCore.utils.CompatibilityLayer;
 import com.onarandombox.MultiverseCore.utils.PermissionTools;
+import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -324,11 +325,11 @@ public class MVPlayerListener implements Listener {
 
     private void sendPlayerToDefaultWorld(final Player player) {
         // Remove the player 1 tick after the login. I'm sure there's GOT to be a better way to do this...
-        this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin,
+        this.plugin.getScheduler().runTaskLaterAtEntity(player,
             new Runnable() {
                 @Override
                 public void run() {
-                    player.teleport(plugin.getMVWorldManager().getFirstSpawnWorld().getSpawnLocation());
+                    PaperLib.teleportAsync(player, plugin.getMVWorldManager().getFirstSpawnWorld().getSpawnLocation());
                 }
             }, 1L);
     }
@@ -353,7 +354,7 @@ public class MVPlayerListener implements Listener {
     public void handleGameModeAndFlight(final Player player, final MultiverseWorld world) {
         // We perform this task one tick later to MAKE SURE that the player actually reaches the
         // destination world, otherwise we'd be changing the player mode if they havent moved anywhere.
-        this.plugin.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin,
+        this.plugin.getScheduler().runTaskLaterAtEntity(player,
                 new Runnable() {
                     @Override
                     public void run() {

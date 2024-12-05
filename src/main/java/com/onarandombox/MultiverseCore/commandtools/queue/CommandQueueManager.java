@@ -9,12 +9,11 @@ package com.onarandombox.MultiverseCore.commandtools.queue;
 
 import com.dumptruckman.minecraft.util.Logging;
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import org.bukkit.Bukkit;
+import me.nahu.scheduler.wrapper.task.WrappedTask;
 import org.bukkit.ChatColor;
 import org.bukkit.block.data.type.CommandBlock;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -63,12 +62,11 @@ public class CommandQueueManager {
      * Expire task that removes a {@link QueuedCommand} from queue after valid duration defined.
      *
      * @param queuedCommand Command to run the expire task on.
-     * @return The expire {@link BukkitTask}.
+     * @return The expire {@link WrappedTask}.
      */
     @NotNull
-    private BukkitTask runExpireLater(@NotNull QueuedCommand queuedCommand) {
-        return Bukkit.getScheduler().runTaskLater(
-                this.plugin,
+    private WrappedTask runExpireLater(@NotNull QueuedCommand queuedCommand) {
+        return this.plugin.getScheduler().runTaskLater(
                 expireRunnable(queuedCommand),
                 queuedCommand.getValidDuration() * TICKS_PER_SECOND
         );

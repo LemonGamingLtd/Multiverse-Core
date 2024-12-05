@@ -17,6 +17,10 @@ repositories {
     mavenCentral()
 
     maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+
+    maven {
         url = uri('https://hub.spigotmc.org/nexus/content/repositories/snapshots/')
     }
 
@@ -62,6 +66,9 @@ dependencies {
     }
     compileOnly 'de.themoep.idconverter:mappings:1.2-SNAPSHOT'
     compileOnly 'org.jetbrains:annotations:16.0.2'
+
+    implementation 'com.github.NahuLD.folia-scheduler-wrapper:folia-scheduler-wrapper:v0.0.3'
+    implementation "io.papermc:paperlib:1.0.7"
 
     testImplementation 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
     testImplementation('com.googlecode.json-simple:json-simple:1.1.1') {
@@ -183,6 +190,8 @@ shadowJar {
     relocate 'com.dumptruckman.minecraft.util.DebugLog', 'com.onarandombox.MultiverseCore.utils.DebugFileLogger'
     relocate 'org.codehaus.jettison', 'com.onarandombox.jettison'
     relocate 'de.themoep.idconverter', 'com.onarandombox.idconverter'
+    relocate 'me.nahu.scheduler', "com.onarandombox.scheduler"
+    relocate 'io.papermc.lib', "com.onarandombox.paperlib"
 
     configurations = [project.configurations.shadowed]
 
