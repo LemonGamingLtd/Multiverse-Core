@@ -5,6 +5,7 @@ website: 'https://dev.bukkit.org/projects/multiverse-core'
 softdepend: ['Vault']
 api-version: 1.13
 version: ${version}
+folia-supported: true
 commands:
   mv:
     description: Generic Multiverse Command
