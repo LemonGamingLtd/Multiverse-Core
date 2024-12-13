@@ -484,6 +484,18 @@ public class WorldManager implements MVWorldManager {
         this.plugin.getScheduler().runTask(() -> {
             World cbworld = null;
             try {
+                if (creator.environment() == null) {
+                    final Environment environment;
+                    if (worldName.endsWith("_nether")) {
+                        environment = Environment.NETHER;
+                    } else if (worldName.endsWith("_end")) {
+                        environment = Environment.THE_END;
+                    } else {
+                        environment = Environment.NORMAL;
+                    }
+                    creator.environment(environment);
+                }
+
                 cbworld = creator.createWorld();
             } catch (Exception e) {
                 e.printStackTrace();
