@@ -23,7 +23,7 @@ public class MVWorldInitListener implements Listener {
     @EventHandler
     public void initWorld(WorldInitEvent event) {
         if (!plugin.getMVWorldManager().isKeepingSpawnInMemory(event.getWorld())) {
-            event.getWorld().setKeepSpawnInMemory(false);
+            plugin.getScheduler().runTask(() -> event.getWorld().setKeepSpawnInMemory(false));
         }
     }
 }
